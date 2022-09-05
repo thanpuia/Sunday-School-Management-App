@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TeacherActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="sdfsdf"
+        android:id="@+id/department_name"
+        android:layout_marginBottom="10dp"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/department_name"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:id="@+id/teacher_recycler_view"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_teacher_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_baseline_person_add_24_white"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="30dp"
+        android:onClick="addTeacherClick"
+        />
+
+</RelativeLayout>
