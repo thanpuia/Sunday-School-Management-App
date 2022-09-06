@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView departmentRecyclerView;
     DepartmentAdapter departmentAdapter;
+    SharedPreferences sharedPreferences;
 
     static String MY_URL_BASE = "http://192.168.29.159:88/api/";
     ArrayList<DepartmentEntity> departmentList;
@@ -35,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedPreferences = this.getSharedPreferences("com.example.root.sharedpreferences", this.MODE_PRIVATE);
         departmentList = new ArrayList<>();
 
         departmentRecyclerView = findViewById(R.id.department_recycler_view);

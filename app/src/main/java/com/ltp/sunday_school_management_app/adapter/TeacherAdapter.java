@@ -25,10 +25,12 @@ import java.util.ArrayList;
 public class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.ViewHolder> {
     ArrayList<TeacherEntity> teacherEntities;
     Context context;
-
-    public TeacherAdapter(ArrayList<TeacherEntity> mTeacherEntities, Context mContext){
+    int departmentId;
+    public TeacherAdapter(ArrayList<TeacherEntity> mTeacherEntities, int mDepartmentId, Context mContext){
         this.teacherEntities = mTeacherEntities;
         this.context = mContext;
+        this.departmentId = mDepartmentId;
+
     }
 
     @NonNull
@@ -58,6 +60,7 @@ public class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.ViewHold
 
                         Intent intent = new Intent(context, TeacherEditActivity.class);
                         intent.putExtra("teacherId",teacherEntities.get(holder.getAdapterPosition()).getId());
+                        intent.putExtra("departmentId",departmentId);
                         view.getContext().startActivity(intent);
 
                         return true;

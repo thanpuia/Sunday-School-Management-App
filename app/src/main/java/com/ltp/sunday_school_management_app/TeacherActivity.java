@@ -6,16 +6,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.ltp.sunday_school_management_app.adapter.DepartmentAdapter;
+import com.ltp.sunday_school_management_app.adapter.RecyclerItemClickListener;
 import com.ltp.sunday_school_management_app.adapter.TeacherAdapter;
-import com.ltp.sunday_school_management_app.entity.DepartmentEntity;
 import com.ltp.sunday_school_management_app.entity.TeacherEntity;
 import com.ltp.sunday_school_management_app.form.TeacherFormActivity;
 
@@ -68,24 +66,47 @@ public class TeacherActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(String.valueOf(result));
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
 
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject teacher = jsonArray.getJSONObject(i);
-                                String myTeacher = teacher.getString("name");
-                                int myId = teacher.getInt("id");
+                            if(jsonArray.length()==0){
 
-                                TeacherEntity teacherEntity = new TeacherEntity();
-                                teacherEntity.setName(myTeacher);
-                                teacherEntity.setId(myId);
+                            }else {
 
-                                teacherEntities.add(teacherEntity);
+                                for (int k = 0; k < jsonArray.length(); k++) {
+                                    JSONObject teacher = jsonArray.getJSONObject(k);
+                                    String myTeacher = teacher.getString("name");
+                                    int myId = teacher.getInt("id");
+
+                                    TeacherEntity teacherEntity = new TeacherEntity();
+                                    teacherEntity.setName(myTeacher);
+                                    teacherEntity.setId(myId);
+
+                                    teacherEntities.add(teacherEntity);
+                                }
+
+
+                                teacherAdapter = new TeacherAdapter(teacherEntities, departmentId, getApplicationContext());
+                                teacherRecyclerView.setAdapter(teacherAdapter);
+                                teacherRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                                teacherRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), teacherRecyclerView,
+                                        new RecyclerItemClickListener.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, int position) {
+                                                int id = teacherEntities.get(position).getId();
+                                                String name = teacherEntities.get(position).getName();
+
+                                                Intent intent = new Intent(getApplicationContext(),StudentActivity.class);
+                                                intent.putExtra("teacherId",id);
+                                                intent.putExtra("teacherName",name);
+
+                                                startActivity(intent);
+                                            }
+
+                                            @Override
+                                            public void onLongItemClick(View view, int position) {
+
+                                            }
+                                        }));
                             }
-
-                            Log.d("tag",""+teacherEntities.get(1));
-
-                            teacherAdapter = new TeacherAdapter(teacherEntities,getApplicationContext());
-                            teacherRecyclerView.setAdapter(teacherAdapter);
-                            teacherRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
                         } catch (JSONException jsonException) {
                             jsonException.printStackTrace();
                         }
@@ -98,8 +119,9 @@ public class TeacherActivity extends AppCompatActivity {
 
     public void addTeacherClick(View view) {
         Intent intent = new Intent(this, TeacherFormActivity.class);
-        intent.putExtra("","");
+        intent.putExtra("departmentId",departmentId);
 
         startActivity(intent);
     }
+
 }

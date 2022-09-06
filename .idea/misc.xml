@@ -5,11 +5,14 @@
       <map>
         <entry key="..\:/Software Project/SundaySchoolManagementApp/app/src/main/res/drawable/ic_baseline_more_vert_24_black.xml" value="0.19074074074074074" />
         <entry key="..\:/Software Project/SundaySchoolManagementApp/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Software Project/SundaySchoolManagementApp/app/src/main/res/layout/activity_student.xml" value="0.20416666666666666" />
+        <entry key="..\:/Software Project/SundaySchoolManagementApp/app/src/main/res/layout/activity_student_edit.xml" value="0.20416666666666666" />
         <entry key="..\:/Software Project/SundaySchoolManagementApp/app/src/main/res/layout/activity_teacher.xml" value="0.25" />
-        <entry key="..\:/Software Project/SundaySchoolManagementApp/app/src/main/res/layout/activity_teacher_edit.xml" value="0.20416666666666666" />
+        <entry key="..\:/Software Project/SundaySchoolManagementApp/app/src/main/res/layout/activity_teacher_edit.xml" value="0.1" />
         <entry key="..\:/Software Project/SundaySchoolManagementApp/app/src/main/res/layout/activity_teacher_form.xml" value="0.20416666666666666" />
         <entry key="..\:/Software Project/SundaySchoolManagementApp/app/src/main/res/layout/department_home.xml" value="0.20416666666666666" />
         <entry key="..\:/Software Project/SundaySchoolManagementApp/app/src/main/res/layout/ripple.xml" value="0.20416666666666666" />
+        <entry key="..\:/Software Project/SundaySchoolManagementApp/app/src/main/res/layout/student_home.xml" value="0.20416666666666666" />
         <entry key="..\:/Software Project/SundaySchoolManagementApp/app/src/main/res/layout/teacher_home.xml" value="0.2" />
         <entry key="..\:/Software Project/SundaySchoolManagementApp/app/src/main/res/menu/teacher_popup.xml" value="0.20416666666666666" />
       </map>
