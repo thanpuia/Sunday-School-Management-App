@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ import com.ltp.sunday_school_management_app.adapter.StudentAdapter;
 import com.ltp.sunday_school_management_app.adapter.TeacherAdapter;
 import com.ltp.sunday_school_management_app.entity.StudentEntity;
 import com.ltp.sunday_school_management_app.entity.TeacherEntity;
+import com.ltp.sunday_school_management_app.form.StudentFormActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +27,8 @@ import java.util.ArrayList;
 
 public class StudentActivity extends AppCompatActivity {
     int teacherId;
+    int departmentId;
+
     String teacherName;
 
     RecyclerView studentRecyclerView;
@@ -32,6 +37,7 @@ public class StudentActivity extends AppCompatActivity {
     StudentAdapter studentAdapter;
 
     ArrayList<StudentEntity> studentEntities;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +46,12 @@ public class StudentActivity extends AppCompatActivity {
 
         studentRecyclerView = findViewById(R.id.student_recycler_view);
         teacherNameTv = findViewById(R.id.teacher_name);
-
+        sharedPreferences = this.getSharedPreferences("com.example.root.sharedpreferences", this.MODE_PRIVATE);
         studentEntities = new ArrayList<>();
 
-        Bundle extras = getIntent().getExtras();
-        if(extras!=null){
-            teacherId = extras.getInt("teacherId");
-            teacherName = extras.getString("teacherName");
-        }else{
-            teacherId = 0;
-            teacherName ="";
-        }
+        teacherId = sharedPreferences.getInt("teacherId",0);
+        departmentId = sharedPreferences.getInt("departmentId",0);
+        teacherName = sharedPreferences.getString("teacherName","");
 
         teacherNameTv.setText(teacherName);
         String URL = MainActivity.MY_URL_BASE+"studentByTeacher/"+teacherId;
@@ -97,5 +98,11 @@ public class StudentActivity extends AppCompatActivity {
     }
 
     public void addStudentClick(View view) {
+
+        Intent intent = new Intent(this, StudentFormActivity.class);
+        intent.putExtra("departmentId",departmentId);
+        intent.putExtra("teacherId",teacherId);
+        startActivity(intent);
+        finish();
     }
 }

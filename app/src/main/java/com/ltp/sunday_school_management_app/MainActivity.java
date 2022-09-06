@@ -76,8 +76,12 @@ public class MainActivity extends AppCompatActivity {
                                 new RecyclerItemClickListener.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(View view, int position) {
+
                                         int id = departmentList.get(position).getId();
                                         String name = departmentList.get(position).getName();
+
+                                        sharedPreferences.edit().putInt("departmentId" ,id).apply();
+                                        sharedPreferences.edit().putString("departmentName" ,name).apply();
 
                                         Intent intent = new Intent(getApplicationContext(),TeacherActivity.class);
                                         intent.putExtra("departmentId",id);

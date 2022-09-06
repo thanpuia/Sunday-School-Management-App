@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SundaySchoolManagementApp">
         <activity
+            android:name=".form.StudentFormActivity"
+            android:exported="false" />
+        <activity
             android:name=".form.StudentEditActivity"
             android:exported="false" />
         <activity

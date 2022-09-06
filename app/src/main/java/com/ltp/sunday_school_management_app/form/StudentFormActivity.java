@@ -1,22 +1,24 @@
 package com.ltp.sunday_school_management_app.form;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.ltp.sunday_school_management_app.R;
+import com.ltp.sunday_school_management_app.StudentActivity;
 import com.ltp.sunday_school_management_app.TeacherActivity;
 import com.ltp.sunday_school_management_app.entity.DepartmentEntity;
-
+import com.ltp.sunday_school_management_app.entity.TeacherEntity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,69 +27,96 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class TeacherFormActivity extends AppCompatActivity {
+public class StudentFormActivity extends AppCompatActivity {
 
     EditText name;
     EditText dob;
-    EditText phone;
+    EditText fathersName;
+    EditText mothersName;
+    EditText guardianName;
+    EditText phone1;
+    EditText phone2;
+    Button submitButton;
     EditText bial;
     EditText section;
     EditText location;
-    CircleImageView circleImageView;
-    Button teacherNewSubmitButton;
+    Spinner departmentSpinner;
+    Spinner teacherSpinner;
 
     ArrayList<DepartmentEntity> departmentEntities;
+    ArrayList<TeacherEntity> teacherEntities;
 
-    static String MY_URL_BASE = "http://192.168.29.159:88/api/";
+    int teacherId;
     int departmentId;
+
+    String tempo;
+    CircleImageView circleImageView;
+    static String MY_URL_BASE = "http://192.168.29.159:88/api/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_teacher_form);
+        setContentView(R.layout.activity_student_form);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.root.sharedpreferences", this.MODE_PRIVATE);
 
-        departmentId = getIntent().getIntExtra("departmentId",0);
+        teacherId = sharedPreferences.getInt("teacherId",0);
+        departmentId = sharedPreferences.getInt("departmentId",0);
+
+        teacherEntities = new ArrayList<>();
         departmentEntities = new ArrayList<>();
 
-        name = findViewById(R.id.teacher_name_et);
-        dob = findViewById(R.id.dob_et);
-        phone = findViewById(R.id.phone_et);
-        bial = findViewById(R.id.bial_et);
-        section = findViewById(R.id.section_et);
-        location = findViewById(R.id.location_et);
-        circleImageView = findViewById(R.id.teacher_picture_circle);
-        teacherNewSubmitButton = findViewById(R.id.teacher_submit);
+        name = findViewById(R.id.name_student_et_new);
+        dob = findViewById(R.id.dob_student_et_new);
+        fathersName = findViewById(R.id.fathers_name_student_et_new);
+        mothersName = findViewById(R.id.mothers_name_student_et_new);
+        guardianName = findViewById(R.id.guardian_name_student_et_new);
 
-       teacherNewSubmitButton.setEnabled(false);
+        phone1 = findViewById(R.id.phone1_student_et_new);
+        phone2 = findViewById(R.id.phone2_student_et_new);
+
+        bial = findViewById(R.id.bial_name_student_et_new);
+        section = findViewById(R.id.section_name_student_et_new);
+        location = findViewById(R.id.location_name_student_et_new);
+
+        circleImageView = findViewById(R.id.picture_student_et_new);
+        submitButton = findViewById(R.id.student_submit_new);
+
         getTheDepartmentList();
 
     }
 
-
-    public void teacherSubmitClick(View view) {
-        String name,dob,phone,bial,section,location,circleImageView;
-
+    public void studentSubmitClick(View view) {
+        String name,dob,phone1,phone2,fathersName,mothersName,guardian
+                ,bial,section,location,circleImageView;
         name = this.name.getText().toString();
+        fathersName = this.fathersName.getText().toString();
+        mothersName = this.mothersName.getText().toString();
+        guardian = this.guardianName.getText().toString();
         dob = this.dob.getText().toString();
-        phone = this.phone.getText().toString();
+        phone1 = this.phone1.getText().toString();
+        phone2 = this.phone2.getText().toString();
+
         bial = this.bial.getText().toString();
         section = this.section.getText().toString();
         location = this.location.getText().toString() ;
 
-
-        JsonObject teacher = new JsonObject();
-        teacher.addProperty("name",name);
-        teacher.addProperty("dob",dob);
-        teacher.addProperty("phone",phone);
-        teacher.addProperty("bial",bial);
-        teacher.addProperty("section",section);
-        teacher.addProperty("location",location);
-        teacher.addProperty("department_id",departmentId);
-
+        JsonObject student = new JsonObject();
+        student.addProperty("name",name);
+        student.addProperty("dob",dob);
+        student.addProperty("phone1",phone1);
+        student.addProperty("phone2",phone2);
+        student.addProperty("fathers_name",fathersName);
+        student.addProperty("mothers_name",mothersName);
+        student.addProperty("guardian",guardian);
+        student.addProperty("bial",bial);
+        student.addProperty("section",section);
+        student.addProperty("location",location);
+        student.addProperty("department_id",departmentId);
+        student.addProperty("teacher_id",teacherId);
 
         Ion.with(this)
-                .load("POST","http://192.168.29.159:88/api/teacher")
-                .setJsonObjectBody(teacher)
+                .load("POST","http://192.168.29.159:88/api/student")
+                .setJsonObjectBody(student)
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
@@ -98,7 +127,7 @@ public class TeacherFormActivity extends AppCompatActivity {
                                 mDeptName = departmentEntities.get(i).getName();
                             }
                         }
-                        Intent intent = new Intent(getApplicationContext(),TeacherActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), StudentActivity.class);
                         intent.putExtra("departmentId",departmentId);
                         intent.putExtra("departmentName",mDeptName);
                         startActivity(intent);
@@ -106,9 +135,7 @@ public class TeacherFormActivity extends AppCompatActivity {
                     }
                 });
 
-
     }
-
     private void getTheDepartmentList() {
         Ion.with(this)
                 .load("GET",MY_URL_BASE+"department")
@@ -133,7 +160,7 @@ public class TeacherFormActivity extends AppCompatActivity {
 
 
                             }
-                            teacherNewSubmitButton.setEnabled(true);
+                            submitButton.setEnabled(true);
 
 
                         }catch (Exception exception){

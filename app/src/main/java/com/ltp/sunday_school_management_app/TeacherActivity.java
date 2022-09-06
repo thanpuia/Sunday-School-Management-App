@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ public class TeacherActivity extends AppCompatActivity {
     TeacherAdapter teacherAdapter;
 
     ArrayList<TeacherEntity> teacherEntities;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +45,11 @@ public class TeacherActivity extends AppCompatActivity {
         departmentNameTv = findViewById(R.id.department_name);
 
         teacherEntities = new ArrayList<>();
+        sharedPreferences = this.getSharedPreferences("com.example.root.sharedpreferences", this.MODE_PRIVATE);
 
-        Bundle extras = getIntent().getExtras();
-        if(extras!=null){
-            departmentId = extras.getInt("departmentId");
-            departmentName = extras.getString("departmentName");
-        }else{
-            departmentId = 0;
-            departmentName ="";
-        }
+        departmentId = sharedPreferences.getInt("departmentId",0);
+        departmentName = sharedPreferences.getString("departmentName","");
+
 
         departmentNameTv.setText(departmentName);
         String URL = MainActivity.MY_URL_BASE+"teacherByDepartment/"+departmentId;
@@ -93,6 +91,9 @@ public class TeacherActivity extends AppCompatActivity {
                                             public void onItemClick(View view, int position) {
                                                 int id = teacherEntities.get(position).getId();
                                                 String name = teacherEntities.get(position).getName();
+
+                                                sharedPreferences.edit().putInt("teacherId" , id).apply();
+                                                sharedPreferences.edit().putString("teacherName" , name).apply();
 
                                                 Intent intent = new Intent(getApplicationContext(),StudentActivity.class);
                                                 intent.putExtra("teacherId",id);

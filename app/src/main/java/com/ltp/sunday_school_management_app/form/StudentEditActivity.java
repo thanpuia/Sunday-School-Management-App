@@ -2,6 +2,7 @@ package com.ltp.sunday_school_management_app.form;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -13,6 +14,8 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.ltp.sunday_school_management_app.R;
+import com.ltp.sunday_school_management_app.StudentActivity;
+import com.ltp.sunday_school_management_app.TeacherActivity;
 import com.ltp.sunday_school_management_app.entity.DepartmentEntity;
 import com.ltp.sunday_school_management_app.entity.TeacherEntity;
 
@@ -43,9 +46,10 @@ public class StudentEditActivity extends AppCompatActivity {
 
     CircleImageView circleImageView;
     int teacherId;
+    int newTeacherId;
     int studentId;
     int departmentId;
-    int mDepartmentId;
+    int newDepartmentId;
 
     static String MY_URL_BASE = "http://192.168.29.159:88/api/";
     ArrayList<DepartmentEntity> departmentList;
@@ -58,7 +62,7 @@ public class StudentEditActivity extends AppCompatActivity {
     ArrayAdapter<String> teacherAdapter;
 
     String nameString,dobString,phone1String,phone2String,mothersNameString,fathersNameString,guardianNameString,
-            bialString,sectionString,locationString,circleImageViewString, deptNameString;
+            bialString,sectionString,locationString,circleImageViewString, deptNameString,teacherNameString;
     String myDeptName;
     String myTeachName;
 
@@ -79,7 +83,9 @@ public class StudentEditActivity extends AppCompatActivity {
         deptNameSimpleList = new ArrayList<>();
         teacherNameSimpleList = new ArrayList<>();
 
-        mDepartmentId=0;
+        newDepartmentId=0;
+        newTeacherId =0;
+
         teacherId = getIntent().getIntExtra("teacherId",0);
         departmentId = getIntent().getIntExtra("departmentId",0);
 
@@ -199,5 +205,72 @@ public class StudentEditActivity extends AppCompatActivity {
     }
 
     public void studentSubmitEditClick(View view) {
+
+
+        nameString = this.name.getText().toString();
+        fathersNameString = this.fathersName.getText().toString();
+        mothersNameString = this.mothersName.getText().toString();
+        guardianNameString = this.guardianName.getText().toString();
+
+        dobString = this.dob.getText().toString();
+        phone1String = this.phone1.getText().toString();
+        phone2String = this.phone2.getText().toString();
+        bialString = this.bial.getText().toString();
+        sectionString = this.section.getText().toString();
+        locationString = this.location.getText().toString() ;
+        deptNameString = this.departmentSpinner.getSelectedItem().toString();
+        teacherNameString = this.teacherSpinner.getSelectedItem().toString();
+
+        //GET THE DEPARTMENT ID
+        for(int i=0;i<departmentList.size();i++){
+            if(deptNameString == departmentList.get(i).getName())
+                newDepartmentId = departmentList.get(i).getId();
+        }
+
+        //GET THE TEACHER ID
+        for(int i=0;i<teacherList.size();i++){
+            if(teacherNameString == teacherList.get(i).getName())
+                newTeacherId = teacherList.get(i).getId();
+        }
+
+        updateTeacher();
+
+    }
+
+    private void updateTeacher(){
+        JsonObject student = new JsonObject();
+        student.addProperty("name",nameString);
+        student.addProperty("fathers_name",fathersNameString);
+        student.addProperty("mothers_name",mothersNameString);
+        student.addProperty("guardian",guardianNameString);
+
+        student.addProperty("dob",dobString);
+        student.addProperty("phone1",phone1String);
+        student.addProperty("phone2",phone2String);
+
+        student.addProperty("bial",bialString);
+        student.addProperty("section",sectionString);
+        student.addProperty("location",locationString);
+        //student.addProperty("photo",locationString);
+
+        student.addProperty("department_id",newDepartmentId);
+        student.addProperty("teacher_id",newTeacherId);
+
+        Ion.with(getApplicationContext())
+                .load("PUT","http://192.168.29.159:88/api/student/"+studentId)
+//                .setJsonObjectBody(teacher)
+                .addHeader("Accept","application/json")
+                .setHeader("Content-Type", "application/json")
+                //.addMultipartParts(parts)
+                .setJsonObjectBody(student)
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        Intent intent = new Intent(getApplicationContext(), StudentActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
     }
 }
