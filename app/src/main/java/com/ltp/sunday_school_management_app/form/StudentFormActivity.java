@@ -51,7 +51,7 @@ public class StudentFormActivity extends AppCompatActivity {
 
     String tempo;
     CircleImageView circleImageView;
-    static String MY_URL_BASE = "http://192.168.29.159:88/api/";
+    static String MY_URL_BASE = "https://electricveng.herokuapp.com/api/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +115,7 @@ public class StudentFormActivity extends AppCompatActivity {
         student.addProperty("teacher_id",teacherId);
 
         Ion.with(this)
-                .load("POST","http://192.168.29.159:88/api/student")
+                .load("POST","https://electricveng.herokuapp.com/api/student")
                 .setJsonObjectBody(student)
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {

@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
     DepartmentAdapter departmentAdapter;
     SharedPreferences sharedPreferences;
 
-    static String MY_URL_BASE = "http://192.168.29.159:88/api/";
+    //static String MY_URL_BASE = "http://192.168.29.159:88/api/";
+    static String MY_URL_BASE = "https://electricveng.herokuapp.com/api/";
     ArrayList<DepartmentEntity> departmentList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

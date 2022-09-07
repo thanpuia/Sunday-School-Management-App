@@ -38,7 +38,7 @@ public class TeacherFormActivity extends AppCompatActivity {
 
     ArrayList<DepartmentEntity> departmentEntities;
 
-    static String MY_URL_BASE = "http://192.168.29.159:88/api/";
+    static String MY_URL_BASE = "https://electricveng.herokuapp.com/api/";
     int departmentId;
 
     @Override
@@ -86,7 +86,7 @@ public class TeacherFormActivity extends AppCompatActivity {
 
 
         Ion.with(this)
-                .load("POST","http://192.168.29.159:88/api/teacher")
+                .load("POST","https://electricveng.herokuapp.com/api/teacher")
                 .setJsonObjectBody(teacher)
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {

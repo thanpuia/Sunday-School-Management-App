@@ -51,7 +51,7 @@ public class StudentEditActivity extends AppCompatActivity {
     int departmentId;
     int newDepartmentId;
 
-    static String MY_URL_BASE = "http://192.168.29.159:88/api/";
+    static String MY_URL_BASE = "https://electricveng.herokuapp.com/api/";
     ArrayList<DepartmentEntity> departmentList;
     ArrayList<TeacherEntity> teacherList;
 
@@ -257,7 +257,7 @@ public class StudentEditActivity extends AppCompatActivity {
         student.addProperty("teacher_id",newTeacherId);
 
         Ion.with(getApplicationContext())
-                .load("PUT","http://192.168.29.159:88/api/student/"+studentId)
+                .load("PUT","https://electricveng.herokuapp.com/api/student/"+studentId)
 //                .setJsonObjectBody(teacher)
                 .addHeader("Accept","application/json")
                 .setHeader("Content-Type", "application/json")

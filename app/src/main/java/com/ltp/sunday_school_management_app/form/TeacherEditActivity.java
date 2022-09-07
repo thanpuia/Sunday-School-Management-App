@@ -46,7 +46,7 @@ public class TeacherEditActivity extends AppCompatActivity {
     int departmentId;
     int mDepartmentId;
 
-    static String MY_URL_BASE = "http://192.168.29.159:88/api/";
+    static String MY_URL_BASE = "https://electricveng.herokuapp.com/api/";
     ArrayList<DepartmentEntity> departmentList;
     List<String> deptName;
     ArrayAdapter<String> adapter;
@@ -137,7 +137,7 @@ public class TeacherEditActivity extends AppCompatActivity {
             teacher.addProperty("department_id",mDepartmentId);
 
             Ion.with(getApplicationContext())
-                    .load("PUT","http://192.168.29.159:88/api/teacher/"+teacherId)
+                    .load("PUT","https://electricveng.herokuapp.com/api/teacher/"+teacherId)
 //                .setJsonObjectBody(teacher)
                     .addHeader("Accept","application/json")
                     .setHeader("Content-Type", "application/json")
@@ -201,7 +201,7 @@ public class TeacherEditActivity extends AppCompatActivity {
         }
         public void fillTheForm(int teacherId){
             Ion.with(this)
-                    .load("GET","http://192.168.29.159:88/api/teacher/"+teacherId)
+                    .load("GET","https://electricveng.herokuapp.com/api/teacher/"+teacherId)
                     .asJsonObject()
                     .setCallback(new FutureCallback<JsonObject>() {
                         @Override
